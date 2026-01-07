@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://fonts.googleapis.com/css2?family=Geom:ital,wght@0,300..900;1,300..900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Stack+Sans+Text:wght@200..700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+
+
+<title>Locaciones</title>
+
+<style>
+:root{
+  --rojo:#ea243e;
+  --rojo-hover: rgba(232,41,66,.35);
+  --negro:#181818;
+  --blanco:#fff;
+}
+
+*{margin:0;padding:0;box-sizing:border-box;}
+
+body{
+  font-family:Arial, Helvetica, sans-serif;
+  background:var(--rojo);
+  color:var(--blanco);
+}
+
+/* ===== NAVBAR ===== */
+.navbar-wrapper{
+  display:flex;
+  justify-content:center;
+  margin-top:40px;
+  padding:0 20px;
+  position:fixed;   /* 👈 AHORA FIXED */
+  top:0;
+  left:0;
+  width:100%;
+  z-index:50;
+  transition:.4s;
+}
+
+/* Más espacio cuando menú abierto */
+.navbar-wrapper.menu-open{
+  margin-top:20px; /* <-- aumenta espacio superior al desplegar menú */
+  padding:0 20px;
+}
+
+.navbar{
+  width:100%;
+  max-width:1200px;
+  background:var(--negro);
+  padding:16px 28px;
+  border-radius:20px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  transition:.4s;
+}
+
+.navbar.menu-open{
+  background:var(--rojo);
+  border-radius:0;
+  max-width:100%;
+}
+
+/* LOGO */
+.logo img{
+  width:80px;
+  height:80px;
+  border-radius:50%;
+  border:3px solid #fff;
+  transition: transform .6s, scale .4s;
+}
+
+/* Solo crece al activar menu */
+.navbar.menu-open .logo img{
+  transform: scale(1.2);
+}
+
+/* ===== NAV LINKS DESKTOP ===== */
+.nav-links{
+  display:flex;
+  list-style:none;
+  gap:20px;
+  align-items:center;
+}
+
+.nav-links a{
+  color:#fff;
+  text-decoration:none;
+  font-weight:800;
+  padding:10px 16px;
+  border-radius:12px;
+  transition:background .3s;
+  display:block;
+  
+  font-family: "Geom", sans-serif;
+}
+
+/* Hover de fondo rojo */
+.nav-links a:hover{
+  background: var(--rojo);
+}
+
+/* SLOT PARA DESKTOP */
+.nav-links a .slot {
+  height:2.4rem;
+  overflow:hidden;
+}
+
+.nav-links a .slot-roller{
+  display:flex;
+  flex-direction:column;
+  transition: transform .45s cubic-bezier(.2,.9,.3,1.3);
+}
+
+.nav-links a .slot-roller span{
+  font-size:1rem;
+  font-weight:800;
+  line-height:2.4rem;
+ 
+}
+
+/* Hover/active: gira ruleta */
+.nav-links a:hover .slot-roller,
+.nav-links a:active .slot-roller {
+  transform: translateY(-50%);
+}
+
+/* SEPARADOR | */
+.separator{
+  font-weight:900;
+  opacity:.7;
+  pointer-events:none;
+}
+
+/* ===== HAMBURGER → X ===== */
+.hamburger{
+  display:none;
+  flex-direction:column;
+  justify-content:center;
+  gap:6px;
+  width:40px;
+  height:40px;
+  cursor:pointer;
+  position:relative;
+  transition: transform 0.3s ease; /* para hover */
+}
+
+/* Hover: aumenta tamaño */
+.hamburger:hover{
+  transform: scale(1.15);
+}
+
+.hamburger span{
+  display:block;
+  height:3px;
+  background:#fff;
+  border-radius:2px;
+  transition: all 0.5s ease;
+}
+
+/* Transformación a X */
+.hamburger.active span:nth-child(1){
+  transform: rotate(45deg) translate(6px,6px);
+}
+
+.hamburger.active span:nth-child(2){
+  opacity:0;
+}
+
+.hamburger.active span:nth-child(3){
+  transform: rotate(-45deg) translate(6px,-6px);
+}
+
+/* Rotación de toda la X */
+.hamburger.active{
+  transform: rotate(360deg);
+}
+
+/* Hover cuando ya es X también aumenta */
+.hamburger.active:hover{
+  transform: rotate(360deg) scale(1.15);
+}
+
+/* ===== MOBILE MENU ===== */
+.mobile-menu{
+  position:fixed;
+  inset:0;
+  background:var(--rojo);
+  transform:translateY(-100%);
+  transition:.45s ease;
+  z-index:40;
+  padding:160px 32px;
+  font-family: "Anton", sans-serif;
+}
+
+.mobile-menu.active{
+  transform:translateY(0);
+}
+
+.mobile-menu ul{
+  list-style:none;
+  max-width:420px;
+}
+
+.mobile-menu li{
+  border-bottom:1px solid rgba(255,255,255,.3);
+  padding:24px 0;
+}
+
+.mobile-menu a{
+  color:#fff;
+  text-decoration:none;
+  display:inline-block;
+}
+
+.slot{
+  height:3.2rem;
+  overflow:hidden;
+}
+
+.slot-roller{
+  display:flex;
+  flex-direction:column;
+  transition:transform .45s cubic-bezier(.2,.9,.3,1.3);
+}
+
+.slot-roller span{
+  font-size:2.7rem;
+  font-weight:900;
+  letter-spacing:2px;
+  line-height:3.2rem;
+}
+
+.mobile-menu a:hover .slot-roller,
+.mobile-menu a:active .slot-roller{
+  transform:translateY(-50%);
+}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:900px){
+  .nav-links{display:none;}
+  .hamburger{display:flex;}
+}
+
+
+
+
+.footer {
+  background: #121212;
+  color: #fff;
+  padding-top: 60px;
+  font-family: "Roboto", sans-serif;
+}
+
+/* TOP */
+.footer-top {
+  margin-left: 4.5%;
+  margin-bottom: 60px;
+}
+
+/* ICONOS */
+.footer-socials {
+  display: flex;
+  gap: 18px;
+  margin-bottom: 40px;
+}
+
+.social-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: #ea243e;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.social-icon::before {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 0%;
+  background: #000;
+  transition: height 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.social-icon svg {
+  width: 22px;
+  height: 22px;
+  fill: #000;
+  position: relative;
+  z-index: 1;
+  transition: fill 0.35s ease;
+}
+
+.social-icon:hover::before {
+  height: 100%;
+}
+
+.social-icon:hover svg {
+  fill: #ea243e;
+}
+
+/* AVISOS */
+.footer-links {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.footer-links a {
+  color: #fff;
+  font-size: 1rem;
+  text-decoration: none;
+  position: relative;
+}
+
+.footer-links a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -4px;
+  width: 0%;
+  height: 2px;
+  background: #ea243e;
+  transition: width 0.3s ease;
+}
+
+.footer-links a:hover::after {
+  width: 100%;
+}
+
+/* DIVIDER */
+.footer-divider {
+  width: 100%;
+  height: 3px;
+  background: #ea243e;
+}
+
+/* BLOQUE ROJO */
+.footer-brand {
+  background: #ea243e;
+  padding: 40px 20px;
+  text-align: center;
+}
+
+.footer-logo {
+  width: 300px;
+  max-width: 85%;
+}
+
+.footer-copy {
+  margin-top: 12px;
+  font-size: 0.8rem;
+  color: #000;
+  letter-spacing: 0.6px;
+}
+
+/* RESPONSIVE */
+@media (max-width: 900px) {
+  .footer-top {
+    margin-left: 4.5%;
+  }
+
+  .footer-links a {
+    font-size: 0.95rem;
+  }
+
+  .footer-logo {
+    width: 200px;
+  }
+}
+
+/* SECCIÓN LOCACIONES */
+.locations-section {
+  margin-top: 200px; /* mismo aire que MENU */
+}
+
+/* REUTILIZA menu-title */
+.menu-title {
+  font-family: "Anton", sans-serif;
+  font-size: 5rem;
+  letter-spacing: 3px;
+  margin-bottom: 60px;
+  padding-left: 4.5%;
+}
+
+/* MOBILE */
+@media (max-width: 900px) {
+  .menu-title {
+    font-size: 5rem;
+    padding-left: 4.5%;
+  }
+}
+
+
+/* =========================
+   LOCACIONES
+========================= */
+
+.locations-section {
+  width: 100%;
+  margin-top: 200px;
+}
+
+/* CAJA BLANCA */
+.locations-box {
+  width: 100%;
+  background: #fff;
+  padding: 60px 4.5%;
+}
+
+/* LAYOUT */
+.locations-main {
+  display: flex;
+  gap: 60px;
+  align-items: stretch;
+}
+
+/* INFO */
+.locations-info {
+  width: 40%;
+  color: #000;
+}
+
+.locations-info h2 {
+  font-family: "Anton", sans-serif;
+  font-size: 2.4rem;
+  margin-bottom: 40px;
+}
+
+/* TARJETA CON BORDE (DIRECCIÓN + BOTÓN) */
+.location-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 30px;
+
+  border: 3px solid #ea243e;
+  padding: 22px 26px;
+  border-radius: 16px;
+  max-width: 520px;
+  box-sizing: border-box;
+}
+
+/* TEXTO */
+.location-text strong {
+  display: block;
+  font-size: 1.15rem;
+  margin-bottom: 6px;
+}
+
+.location-text p {
+  font-size: 0.95rem;
+  color: #444;
+  line-height: 1.4;
+}
+
+/* BOTÓN MAPS */
+.maps-btn {
+  padding: 12px 30px;
+  background: #ea243e;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 999px;
+  font-size: 0.9rem;
+  transition: background 0.3s ease;
+  white-space: nowrap;
+}
+
+.maps-btn:hover {
+  background: #c61d33;
+}
+
+/* MAPA */
+.locations-map {
+  width: 60%;
+  display: flex;
+  align-items: center;
+}
+
+.locations-map iframe {
+  width: 100%;
+  min-height: 350px;
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 900px) {
+
+  .locations-main {
+    flex-direction: column;
+    gap: 40px;
+  }
+
+  .locations-info,
+  .locations-map {
+    width: 100%;
+  }
+
+  .locations-info h2 {
+    text-align: center;
+  }
+
+  .location-card {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .maps-btn {
+    margin-top: 12px;
+  }
+
+  .locations-map iframe {
+    height: 300px;
+  }
+}
+
+@media (max-width: 900px) {
+  .menu-title {
+    font-size: 3.5rem; /* más pequeño en móviles/tablet */
+    padding-left: 4.5%;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header class="navbar-wrapper" id="navWrap">
+  <nav class="navbar" id="navbar">
+
+    <div class="logo">
+      <img src="Imagenes/Logo.png" alt="Logo">
+    </div>
+
+    <!-- DESKTOP -->
+    <ul class="nav-links">
+      <li>
+        <a href="index.html"><div class="slot"><div class="slot-roller"><span>Inicio</span><span>Inicio</span></div></div></a>
+      </li>
+      <li>
+        <a href="menu.html"><div class="slot"><div class="slot-roller"><span>Menú</span><span>Menú</span></div></div></a>
+      </li>
+      <li>
+        <a href="locaciones.html"><div class="slot"><div class="slot-roller"><span>Locaciones</span><span>Locaciones</span></div></div></a>
+      </li>
+      <li class="separator">|</li>
+      <li>
+        <a href="acerca_de.html"><div class="slot"><div class="slot-roller"><span>Acerca de</span><span>Acerca de</span></div></div></a>
+      </li>
+    </ul>
+
+    <!-- HAMBURGER -->
+    <div class="hamburger" id="hamburger">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+
+  </nav>
+</header>
+
+<section class="locations-section">
+  <h1 class="menu-title">LOCACIONES</h1>
+
+  <div class="locations-box">
+    <div class="locations-main">
+
+      <!-- INFO IZQUIERDA -->
+      <div class="locations-info">
+        <h2>Nuestros restaurantes</h2>
+
+        <!-- CAJA CON BORDE ROJO -->
+        <div class="location-card bordered">
+
+          <div class="location-text">
+            <strong>¡Ay Caramba!</strong>
+            <p>
+              Galeana 25, Centro<br>
+              49500 Mazamitla, Jal.
+            </p>
+          </div>
+
+          <a
+            href="#"
+            class="maps-btn"
+            data-map="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3751.1444624044034!2d-103.02285482477308!3d19.918316281467536!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x842f091c3b0a5b1b%3A0x310684c1bafda808!2s*21Ay%20Caramba%C2%A1!5e0!3m2!1ses-419!2smx!4v1767735998558!5m2!1ses-419!2smx"
+          >
+            Maps
+          </a>
+
+        </div>
+      </div>
+
+      <!-- MAPA DERECHA -->
+      <div class="locations-map">
+        <iframe
+          id="locationMap"
+          src="https://www.google.com/maps?q=Mazamitla,+Jalisco&output=embed"
+          width="600"
+          height="450"
+          style="border:0;"
+          allowfullscreen=""
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade">
+        </iframe>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+
+<footer class="footer">
+
+  <div class="footer-top">
+
+    <!-- ICONOS SOCIALES -->
+    <div class="footer-socials">
+      <!-- Instagram -->
+      <a href="#" class="social-icon" aria-label="Instagram">
+        <svg viewBox="0 0 24 24">
+          <path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5zm5 5.5A4.5 4.5 0 1 0 16.5 12 4.5 4.5 0 0 0 12 7.5zm0 7.4A2.9 2.9 0 1 1 14.9 12 2.9 2.9 0 0 1 12 14.9zm4.8-7.9a1 1 0 1 1-1 1 1 1 0 0 1 1-1z"/>
+        </svg>
+      </a>
+
+      <!-- Facebook -->
+      <a href="#" class="social-icon" aria-label="Facebook">
+        <svg viewBox="0 0 24 24">
+          <path d="M13 22V12h3l.5-4H13V6.3c0-1.1.3-1.8 1.9-1.8h2V1h-3c-3 0-4.9 1.8-4.9 5.1V8H6v4h3v10z"/>
+        </svg>
+      </a>
+
+      <!-- Pinterest -->
+      <a href="#" class="social-icon" aria-label="Pinterest">
+        <svg viewBox="0 0 24 24">
+          <path d="M12 2a10 10 0 0 0-3.7 19.3c-.1-.8-.2-2 .1-2.9l1.5-6.3s-.4-.8-.4-2c0-1.9 1.1-3.3 2.4-3.3 1.1 0 1.7.8 1.7 1.8 0 1.1-.7 2.7-1.1 4.2-.3 1.2.6 2.2 1.8 2.2 2.2 0 3.7-2.8 3.7-6.1 0-2.5-1.7-4.3-4.6-4.3-3.3 0-5.4 2.4-5.4 5.1 0 .9.3 1.9.8 2.5.1.1.1.2.1.3l-.3 1.1c0 .2-.2.3-.4.2-1.2-.5-2-2.2-2-3.9 0-3.6 2.8-6.9 8-6.9 4.2 0 7.4 3 7.4 6.9 0 4.7-2.6 8.2-6.4 8.2-1.3 0-2.5-.7-2.9-1.5l-.8 3c-.3.9-.9 2-1.4 2.7A10 10 0 1 0 12 2z"/>
+        </svg>
+      </a>
+
+      <!-- TikTok -->
+      <a href="#" class="social-icon" aria-label="TikTok">
+        <svg viewBox="0 0 24 24">
+          <path d="M16 2c.4 2.2 1.7 3.5 3.9 3.7v3.1c-1.3.1-2.5-.3-3.9-1v6.2a6.3 6.3 0 1 1-6.3-6.3c.4 0 .8 0 1.2.1v3.4a2.8 2.8 0 1 0 2.8 2.8V2z"/>
+        </svg>
+      </a>
+    </div>
+
+    <!-- AVISOS -->
+    <ul class="footer-links">
+      <li><a href="#">Aviso de Privacidad</a></li>
+      <li><a href="#">Aviso de Privacidad de Salud del Consumidor</a></li>
+      <li><a href="#">Términos de Uso</a></li>
+      <li><a href="#">No Compartir Mi Información Personal</a></li>
+      <li><a href="#">Accesibilidad</a></li>
+      <li><a href="#">Preferencias de Cookies</a></li>
+    </ul>
+
+    
+
+  </div>
+
+  <!-- LÍNEA RECTA -->
+  <div class="footer-divider"></div>
+
+  <!-- BLOQUE ROJO -->
+  <div class="footer-brand">
+    <img src="Imagenes/Logo.png" alt="Ay Caramba Logo" class="footer-logo">
+    <p class="footer-copy">© 2025 !Ay Caramba¡. Todos los derechos reservados</p>
+  </div>
+
+</footer>
+
+
+<!-- MOBILE -->
+<aside class="mobile-menu" id="mobileMenu">
+  <ul>
+    <li><a href="index.html"><div class="slot"><div class="slot-roller"><span>INICIO</span><span>INICIO</span></div></div></a></li>
+    <li><a href="menu.html"><div class="slot"><div class="slot-roller"><span>MENU</span><span>MENU</span></div></div></a></li>
+    <li><a href="locaciones.html"><div class="slot"><div class="slot-roller"><span>LOCACIONES</span><span>LOCACIONES</span></div></div></a></li>
+    <li><a href="acerca_de.html"><div class="slot"><div class="slot-roller"><span>ACERCA DE</span><span>ACERCA DE</span></div></div></a></li>
+  </ul>
+</aside>
+
+<script>
+const mobileMenu = document.getElementById("mobileMenu");
+const navbar = document.getElementById("navbar");
+const navWrap = document.getElementById("navWrap");
+const hamburger = document.getElementById("hamburger");
+
+hamburger.addEventListener("click", () => {
+  mobileMenu.classList.toggle("active");
+  navbar.classList.toggle("menu-open");
+  navWrap.classList.toggle("menu-open");
+  hamburger.classList.toggle("active"); // activa X + giro
+});
+
+const mapButtons = document.querySelectorAll('.maps-btn');
+  const mapIframe = document.getElementById('locationMap');
+
+  mapButtons.forEach(btn => {
+    btn.addEventListener('click', e => {
+      e.preventDefault();
+      const mapSrc = btn.getAttribute('data-map');
+      if (mapSrc) {
+        mapIframe.src = mapSrc;
+      }
+    });
+  });
+</script>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>
