@@ -954,96 +954,89 @@ body{
     }
   }
 
-.footer { 
-  background: #121212; 
-  color: #fff; padding-top: 60px; 
-  font-family: "Roboto", sans-serif; 
-} 
-  
-  /* TOP */ .footer-top { 
-    margin-left: 4.5%; 
-    margin-bottom: 60px; 
-  } 
-  
-  /* ICONOS */ 
-  .footer-socials { display: flex; gap: 18px; margin-bottom: 40px; } 
-  
-  .social-icon { width: 44px; height: 44px; border-radius: 50%; background: #ea243e; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; } 
-  
-  .social-icon::before { content: ""; position: absolute; bottom: 0; left: 0; width: 100%; height: 0%; background: #000; transition: height 0.45s cubic-bezier(0.4, 0, 0.2, 1); } 
-  
-  .social-icon svg { width: 22px; height: 22px; fill: #000; position: relative; z-index: 1; transition: fill 0.35s ease; } 
-  
-  .social-icon:hover::before { height: 100%; } .social-icon:hover svg { fill: #ea243e; } 
-  
-  /* AVISOS */ 
-  .footer-links { 
-    list-style: none; 
-    padding: 0; 
-    margin: 0; 
-    display: flex; 
-    flex-direction: column; 
-    gap: 22px; 
-  } 
-  
-  .footer-links a { 
-    color: #fff; 
-    font-size: 1rem; 
-    text-decoration: 
-    none; position: relative; 
-  } 
-  
-  .footer-links a::after { 
-    content: ""; 
-    position: absolute; 
-    left: 0; bottom: -4px; 
-    width: 0%; height: 2px; 
-    background: #ea243e; 
-    transition: width 0.3s ease; 
-  } 
-  
-  .footer-links a:hover::after { 
-    width: 100%; 
-  } 
-  
-  /* DIVIDER */ 
-  .footer-divider { 
-    width: 100%; 
-    height: 3px; 
-    background: #ea243e; 
-  } 
-  
-  /* BLOQUE ROJO */ 
-  .footer-brand { 
-    background: #ea243e; 
-    padding: 40px 20px; 
-    text-align: center; 
-  } 
-  
-  .footer-logo { 
-    width: 300px; 
-    max-width: 85%; 
-  } 
-  
-  .footer-copy { 
-    margin-top: 12px; 
-    font-size: 0.8rem; 
-    color: #000; 
-    letter-spacing: 0.6px; 
-  }
-  
+.footer {
+  background: #181818; /* negro suave */
+  color: #fff;
+  padding-top: 60px;
+  font-family: "Roboto", sans-serif;
+}
+
+/* TOP LAYOUT */
+.footer-top {
+  display: flex;
+  justify-content: space-between;
+  gap: 40px;
+  margin: 0 5% 60px;
+  flex-wrap: wrap;
+}
+
+/* COLUMNA IZQUIERDA */
+.footer-left h2 {
+  font-family: "Anton", sans-serif;
+  font-size: 1.8rem;
+  letter-spacing: 1px;
+  margin-bottom: 30px;
+}
+
+/* LINKS */
+.footer-links {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.footer-links a {
+  color: #ddd;
+  text-decoration: none;
+  font-size: 0.95rem;
+}
+
+/* MENSAJE DERECHO */
+.footer-right {
+  max-width: 420px;
+}
+
+.footer-right p {
+  font-family: "Outfit", sans-serif;
+  font-size: 1.6rem;
+  line-height: 1.4;
+  color: #f2f2f2;
+}
+
+/* DIVIDER */
+.footer-divider {
+  width: 100%;
+  height: 2px;
+  background: #333;
+}
+
+/* BRAND */
+.footer-brand {
+  padding: 40px 20px;
+}
+
+.footer-logo {
+  width: 260px;
+  max-width: 90%;
+}
+
+.footer-copy {
+  margin-top: 10px;
+  font-size: 0.8rem;
+  color: #aaa;
+}
+
 /* RESPONSIVE */
 @media (max-width: 900px) {
   .footer-top {
-    margin-left: 4.5%;
+    flex-direction: column;
   }
 
-  .footer-links a {
-    font-size: 0.95rem;
-  }
-
-  .footer-logo {
-    width: 200px;
+  .footer-right p {
+    font-size: 1.3rem;
   }
 }
 </style>
@@ -1435,5 +1428,6 @@ qualities.forEach(q => observerQualities.observe(q));
 
 </body>
 </html>
+
 
 
